@@ -29,15 +29,17 @@ def user():
 
 # first, load your env file, replacing the path here with your own if it differs
 # when using the local database make sure you change your path  to .dev.env, it should work smoothly.
-dotenv = Dotenv(os.path.join(os.path.dirname(__file__), ".env"))
+load_dotenv()
+
+#dotenv = Dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 # update environment just in case
-os.environ.update(dotenv)
+#os.environ.update(dotenv)
 # set globals
-RDS_HOST = os.environ.get("DB_HOST")
-RDS_PORT = int(os.environ.get("DB_PORT", 3306))
-NAME = os.environ.get("DB_USERNAME")
-PASSWORD = os.environ.get("DB_PASSWORD")
-DB_NAME = os.environ.get("DB_NAME")
+RDS_HOST = os.getenv("DB_HOST")
+RDS_PORT = int(os.getenv("DB_PORT", 3306))
+NAME = os.getenv("DB_USERNAME")
+PASSWORD = os.getenv("DB_PASSWORD")
+DB_NAME = os.getenv("DB_NAME")
 
 # we need to instantiate the logger
 logger = logging.getLogger()
