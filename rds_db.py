@@ -1,12 +1,8 @@
-# app.py
-import os
+#rds_db.py
 import logging
 import pymysql.cursors
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask, Response, json, request
 
-
-app = Flask(__name__)
 
 # first, load your env file, replacing the path here with your own if it differs
 # when using the local database make sure you change your path  to .dev.env, it should work smoothly.
@@ -35,22 +31,22 @@ def connect():
     except Exception as e:
         logger.exception("Database Connection Error")
 
-# Adding a post/get route is pretty straightforward with flask, let's add one for getting a fake user
-@app.route('/user', methods=["GET", "POST"])
-def user():
-    resp_dict = {}
-    if request.method == "GET":
-        resp_dict = {"first_name": "John", "last_name": "doe"}
-    if request.method == "POST":
-        data = request.form
-        first_name = data.get("first_name", "")
-        last_name = data.get("last_name", "")
-        email = data.get("email", "")
-        resp_dict = {"first_name": first_name, "last_name": last_name, "email": email}
-    response = Response(json.dumps(resp_dict), 200)
+# Function to build the user table
+def build_db():
+    conn = connect()
+    query = "create table User (ID varchar(255) NOT NULL, firstName varchar(255) NOT NULL, lastName varchar(255) NOT NULL, email varchar(255) NOT NULL, PRIMARY KEY (ID))"
+    try:
+        with conn.cursor() as cur:
+            # just in case it doesn't work the first time let's drop the table if it exists
+            cur.execute("drop table if exists User")
+            cur.execute(query)
+            conn.commit()
+    except Exception as e:
+        logger.exception(e)
+        response = Respone(json.dumps({"status": "error", "message": "could not build table"}), 500)
+    finally:
+        cur.close()
+        conn.close()
+    response = Response(json.dumps({"status": "success"}), 200)
     return response
 
-
-# include this for local dev
-if __name__ == '__main__':
-    app.run()
