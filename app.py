@@ -1,10 +1,10 @@
 # app.py
+import uuid
 import os
 from flask import Flask, Response, json, request
 import logging
 import pymysql.cursors
 from dotenv import load_dotenv, find_dotenv
-import uuid
 
 app = Flask(__name__)
 
