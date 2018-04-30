@@ -7,27 +7,7 @@ from dotenv import load_dotenv, find_dotenv
 
 app = Flask(__name__)
 
-# Input validation for GET data entry
 
-def validate(data):
-    error_fields = []
-    not_null = [
-        "first_name",
-        "last_name",
-        "email"
-    ]
-
-    for x in not_null:
-        if x not in data or len(data[x]) == 0:
-            error_fields.append(x)
-    return (len(error_fields) == 0, error_fields)
-
-def insert(data):
-    uniq_id = str(uuid5(uuid1(), str(uuid1())))
-    query = """insert into User (ID, FirstName, LastName, Email)
-            values(%s, %s, %s, %s)
-            """
-    return (query, (uniq_id, data["first_name"], data["last_name"], data["email"]))
 
 # Adding a post/get route is pretty straightforward with flask, let's add one for getting a fake user
 # Adding a post/get route is pretty straightforward with flask, let's add one for getting a fake user
@@ -73,6 +53,26 @@ def user():
             conn.close()
             cur.close()
         return build_response({"status": "success"}, 200)
+# Input validation for GET data entry
+
+def validate(data):
+    error_fields = []
+    not_null = [
+        "first_name",
+        "last_name",
+        "email"
+    ]
+
+    for x in not_null:
+        if x not in data or len(data[x]) == 0:
+            error_fields.append(x)
+    return (len(error_fields) == 0, error_fields)
+
+def insert(data):
+    #uniq_id = str(uuid5(uuid1(), str(uuid1())))
+    uniq_id = str(uuid1())
+    query = """insert into User (ID, FirstName, LastName, Email)values(%s, %s, %s, %s)"""
+    return (query, (uniq_id, data["first_name"], data["last_name"], data["email"]))
 
 @app.route('/build', methods=["GET"])
 def build():
