@@ -1,32 +1,12 @@
 # app.py
 import os
 import logging
+import pymysql.cursors
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, Response, json, request
 
+
 app = Flask(__name__)
-
-# here is how we are handling routing with flask:
-@app.route('/')
-def index():
-    connect()
-    return "Hello World!", 200
-
-# Adding a post/get route is pretty straightforward with flask, let's add one for getting a fake user
-@app.route('/user', methods=["GET", "POST"])
-def user():
-    resp_dict = {}
-    if request.method == "GET":
-        resp_dict = {"first_name": "John", "last_name": "doe"}
-    if request.method == "POST":
-        data = request.form
-        first_name = data.get("first_name", "")
-        last_name = data.get("last_name", "")
-        email = data.get("email", "")
-        resp_dict = {"first_name": first_name, "last_name": last_name, "email": email}
-    response = Response(json.dumps(resp_dict), 200)
-    connect()
-    return response
 
 # first, load your env file, replacing the path here with your own if it differs
 # when using the local database make sure you change your path  to .dev.env, it should work smoothly.
@@ -53,6 +33,23 @@ def connect():
         return(conn)
     except Exception as e:
         logger.exception("Database Connection Error")
+
+# Adding a post/get route is pretty straightforward with flask, let's add one for getting a fake user
+@app.route('/user', methods=["GET", "POST"])
+def user():
+    resp_dict = {}
+    if request.method == "GET":
+        resp_dict = {"first_name": "John", "last_name": "doe"}
+    if request.method == "POST":
+        data = request.form
+        first_name = data.get("first_name", "")
+        last_name = data.get("last_name", "")
+        email = data.get("email", "")
+        resp_dict = {"first_name": first_name, "last_name": last_name, "email": email}
+    response = Response(json.dumps(resp_dict), 200)
+    connect()
+    return response
+
 
 # include this for local dev
 if __name__ == '__main__':
