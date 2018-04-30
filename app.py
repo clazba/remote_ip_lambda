@@ -4,6 +4,7 @@ from flask import Flask, Response, json, request
 import logging
 import pymysql.cursors
 from dotenv import load_dotenv, find_dotenv
+import uuid
 
 app = Flask(__name__)
 
@@ -69,8 +70,7 @@ def validate(data):
     return (len(error_fields) == 0, error_fields)
 
 def insert(data):
-    #uniq_id = str(uuid5(uuid1(), str(uuid1())))
-    uniq_id = str(uuid1())
+    uniq_id = str(uuid5(uuid1(), str(uuid1())))
     query = """insert into User (ID, FirstName, LastName, Email)values(%s, %s, %s, %s)"""
     return (query, (uniq_id, data["first_name"], data["last_name"], data["email"]))
 
