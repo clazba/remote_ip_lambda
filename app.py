@@ -25,6 +25,7 @@ def user():
         email = data.get("email", "")
         resp_dict = {"first_name": first_name, "last_name": last_name, "email": email}
     response = Response(json.dumps(resp_dict), 200)
+    connect()
     return response
 
 # first, load your env file, replacing the path here with your own if it differs
