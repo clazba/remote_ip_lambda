@@ -1,11 +1,10 @@
 # app.py
-import uuid
 import os
 from flask import Flask, Response, json, request
 import logging
 import pymysql.cursors
 from dotenv import load_dotenv, find_dotenv
-
+from uuid import uuid5, uuid1
 app = Flask(__name__)
 
 
@@ -75,7 +74,7 @@ def insert(data):
             values(%s, %s, %s, %s)
             """
     return (query, (uniq_id, data["first_name"], data["last_name"], data["email"]))
-    
+
 @app.route('/build', methods=["GET"])
 def build():
     return build_db()
