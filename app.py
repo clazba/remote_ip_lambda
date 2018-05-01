@@ -71,14 +71,17 @@ def validate(data):
 
 def insert(data):
     uniq_id = str(uuid5(uuid1(), str(uuid1())))
-    query = """insert into User (ID, FirstName, LastName, Email)values(%s, %s, %s, %s)"""
+    query = """insert into User (ID, FirstName, LastName, Email)
+            values(%s, %s, %s, %s)
+            """
     return (query, (uniq_id, data["first_name"], data["last_name"], data["email"]))
-
+    
 @app.route('/build', methods=["GET"])
 def build():
     return build_db()
 # first, load your env file, replacing the path here with your own if it differs
 # when using the local database make sure you change your path  to .dev.env, it should work smoothly.
+
 load_dotenv()
 
 # we need to instantiate the logger
