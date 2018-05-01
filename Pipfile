@@ -9,6 +9,10 @@ flask = "*"
 mysqlclient = "*"
 setuptools = "*"
 python-dotenv = "*"
+pymysql = "*"
+pipenv = "*"
+lock = "*"
+werkzeug = "*"
 
 [dev-packages]
 awscli = "*"

@@ -5,11 +5,9 @@ import logging
 import pymysql.cursors
 from dotenv import load_dotenv, find_dotenv
 from uuid import uuid5, uuid1
+
 app = Flask(__name__)
 
-
-
-# Adding a post/get route is pretty straightforward with flask, let's add one for getting a fake user
 # Adding a post/get route is pretty straightforward with flask, let's add one for getting a fake user
 @app.route('/user', methods=["GET", "POST"])
 def user():
